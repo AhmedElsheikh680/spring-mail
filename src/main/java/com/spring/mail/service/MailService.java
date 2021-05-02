@@ -3,6 +3,7 @@ package com.spring.mail.service;
 import com.spring.mail.model.Mail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -53,6 +54,35 @@ public class MailService {
         mimeMessageHelper.setText(mail.getText(), true);
         javaMailSender.send(mimeMessage);
     }
+
+    // Send Html Mail With Attachement
+    public void sendHtmlMailWithAttachement(Mail mail) throws MessagingException {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+
+        // true = Multipart Message
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+        mimeMessageHelper.setTo(mail.getTo());
+        mimeMessageHelper.setSubject(mail.getHeader());
+        mimeMessageHelper.setText(mail.getText(), true);
+        String img = "mail.jpg";
+        String img2 = "mail2.jpg";
+        mimeMessageHelper.addAttachment(img, new ClassPathResource(img));
+        mimeMessageHelper.addAttachment(img2, new ClassPathResource(img2));
+
+        javaMailSender.send(mimeMessage);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

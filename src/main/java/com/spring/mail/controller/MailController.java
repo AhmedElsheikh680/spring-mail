@@ -39,7 +39,17 @@ public class MailController {
         return " HTML Mail Sent Successfully!!";
     }
 
+    // http://localhost:8080/mail/sendHtmlMailWithAttachement
+    @GetMapping("/sendHtmlMailWithAttachement")
+    public String sendHtmlMailWithAttachement() throws MessagingException {
+        Mail mail = new Mail();
+        mail.setTo("ahmedelsheikh680@gmail.com");
+        mail.setHeader("Testing Send Attachement Mail From Spring Boot");
+        mail.setText("<h1 style='color:red;'>Check Attachement For Image</h1>");
+        mailService.sendHtmlMailWithAttachement(mail);
 
+        return "Mail With Attachment Sent Successfully!!";
+    }
 
 
 
