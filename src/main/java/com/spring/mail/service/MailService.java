@@ -5,8 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 @Service
 @RequiredArgsConstructor
@@ -26,10 +30,10 @@ public class MailService {
 //    }
 
     // Send A Noraml Text Email
-    public void sendEmail(Mail mail){
+    public void sendTextEmail(Mail mail){
 
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setFrom("ahmedelsheikh680@gmail.com");
+//        simpleMailMessage.setFrom("ahmedelsheikh680@gmail.com");
         simpleMailMessage.setTo(mail.getTo());
         simpleMailMessage.setSubject(mail.getHeader());
         simpleMailMessage.setText(mail.getText());
@@ -37,7 +41,18 @@ public class MailService {
 
     }
 
+    // Send Html Mail
+    public void sendHtmlMail(Mail mail) throws MessagingException {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
+        // true = Multipart Message
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+
+        mimeMessageHelper.setTo(mail.getTo());
+        mimeMessageHelper.setSubject(mail.getHeader());
+        mimeMessageHelper.setText(mail.getText(), true);
+        javaMailSender.send(mimeMessage);
+    }
 
 
 
